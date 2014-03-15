@@ -47,15 +47,15 @@ public class ListModule {
 		private final List<T> _tail;
 
 		public List<T> filter(Predicate<T> p) {
-			if (p.test(head())) { // #2
-				return list(head(), tail().filter(p)); // #3
+			if (p.test(head())) {
+				return list(head(), tail().filter(p));
 			} else {
-				return tail().filter(p); // #4
+				return tail().filter(p);
 			}
 		}
 
 		public <R> List<R> map(final Function<T, R> f) {
-			return list(f.apply(head()), tail().map(f)); // #6
+			return list(f.apply(head()), tail().map(f));
 		}
 
 		public <R, U> List<R> map(final BiFunction<T, U, R> f, final U u) {

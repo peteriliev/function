@@ -3,6 +3,7 @@ package com.merck.uber.basket.function;
 import java.util.function.Function;
 
 import com.merck.uber.basket.ProductPO;
+import com.merck.uber.basket.ProductPOStore;
 
 public class SKU2ProductPO implements Function<String, ProductPO> {
 

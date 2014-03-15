@@ -1,5 +1,5 @@
 package com.merck.uber.basket;
 
-public class ERPWrap {
+public class PaymentType {
 
 }

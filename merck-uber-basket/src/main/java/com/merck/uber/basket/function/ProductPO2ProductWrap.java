@@ -2,8 +2,9 @@ package com.merck.uber.basket.function;
 
 import java.util.function.Function;
 
+import wrap.ProductWrap;
+
 import com.merck.uber.basket.ProductPO;
-import com.merck.uber.basket.ProductWrap;
 
 public final class ProductPO2ProductWrap implements
 		Function<ProductPO, ProductWrap> {
