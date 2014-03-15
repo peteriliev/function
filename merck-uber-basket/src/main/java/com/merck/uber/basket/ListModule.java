@@ -1,5 +1,6 @@
 package com.merck.uber.basket;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -15,6 +16,8 @@ public class ListModule {
 		public List<T> filter(Predicate<T> p);
 
 		public <R> List<R> map(Function<T, R> f);
+
+		public <R, U> List<R> map(BiFunction<T, U, R> f, U u);
 
 		// public <T2> T2 foldLeft (T2 seed, BiFunction<T, U, R> f);
 		// public <T2> T2 foldRight (T2 seed, Function2<T,T2,T2> f);
@@ -51,8 +54,12 @@ public class ListModule {
 			}
 		}
 
-		public <R> List<R> map(Function<T, R> f) {
+		public <R> List<R> map(final Function<T, R> f) {
 			return list(f.apply(head()), tail().map(f)); // #6
+		}
+
+		public <R, U> List<R> map(final BiFunction<T, U, R> f, final U u) {
+			return list(f.apply(head(), u), tail().map(f, u));
 		}
 
 		/*
@@ -85,9 +92,13 @@ public class ListModule {
 	}
 
 	public static class EmptyListHasNoHead extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
 	}
 
 	public static class EmptyListHasNoTail extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
 	}
 
 	public static final List<? extends Object> EMPTY = new List<Object>() {
@@ -116,11 +127,15 @@ public class ListModule {
 			return "()";
 		}
 
-		public List<Object> filter(Predicate p) {
+		public List<Object> filter(Predicate<Object> p) {
 			return this;
 		}
 
 		public <R> List<R> map(Function<Object, R> f) {
+			return emptyList();
+		}
+
+		public <R, U> List<R> map(BiFunction<Object, U, R> f, final U u) {
 			return emptyList();
 		}
 	};
