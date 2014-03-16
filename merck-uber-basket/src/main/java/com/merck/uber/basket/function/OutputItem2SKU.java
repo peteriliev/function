@@ -12,6 +12,7 @@ public final class OutputItem2SKU implements Function<OutputItem, String> {
 
 	public static Function<OutputItem, String> INSTANCE = new OutputItem2SKU();
 
+	// TODO:peteri - use Apache Commons
 	public String apply(OutputItem t) {
 		if (null == t) {
 			return "";

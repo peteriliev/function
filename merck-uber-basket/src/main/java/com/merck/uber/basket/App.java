@@ -13,6 +13,9 @@ import com.merck.uber.basket.function.OutputItemPlusERP2Pair;
 import com.merck.uber.basket.function.PairPlus2UberPLI;
 import com.merck.uber.basket.function.ProductPO2ProductWrap;
 import com.merck.uber.basket.function.SKU2ProductPO;
+import com.merck.uber.basket.function.SumUberPLIs;
+import com.merck.uber.basket.predicate.IsMerckPLI;
+import com.merck.uber.basket.predicate.IsMilliPLI;
 
 public class App {
 	public static void main(String[] args) {
@@ -44,5 +47,18 @@ public class App {
 				new Object[] { request, channel, user });
 
 		return uberPLIs;
+	}
+	
+	void buildJSON(final List<UberPLI> uberPLIs)
+	{
+		final List<UberPLI> merckPLIs = uberPLIs.filter(IsMerckPLI.INSTANCE);
+		final Money merckPLIsTotal = merckPLIs.foldLeft(Money.ZERO, SumUberPLIs.INSTANCE);
+
+		final List<UberPLI> milliPLIs = uberPLIs.filter(IsMilliPLI.INSTANCE);
+		final Money milliPLIsTotal = milliPLIs.foldLeft(Money.ZERO, SumUberPLIs.INSTANCE);
+		
+		
+		
+		
 	}
 }

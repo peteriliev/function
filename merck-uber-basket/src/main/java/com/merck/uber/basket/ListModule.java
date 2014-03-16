@@ -19,9 +19,9 @@ public class ListModule {
 
 		public <R, U> List<R> map(BiFunction<T, U, R> f, U u);
 
-		// public <T2> T2 foldLeft (T2 seed, BiFunction<T, U, R> f);
-		// public <T2> T2 foldRight (T2 seed, Function2<T,T2,T2> f);
-		// public void foreach (Function1Void<T> f);
+		public <U> U foldLeft(U seed, BiFunction<T, U, U> f);
+
+		public <U> U foldRight(U seed, BiFunction<T, U, U> f);
 	}
 
 	public static final class NonEmptyList<T> implements List<T> {
@@ -62,16 +62,6 @@ public class ListModule {
 			return list(f.apply(head(), u), tail().map(f, u));
 		}
 
-		/*
-		 * public <T2> T2 foldLeft (T2 seed, Function2<T2,T,T2> f) { return
-		 * tail().foldLeft(f.apply(seed, head()), f); // #8 }
-		 * 
-		 * public <T2> T2 foldRight (T2 seed, Function2<T,T2,T2> f) { return
-		 * f.apply(head(), tail().foldRight(seed, f)); // #10 }
-		 * 
-		 * public void foreach (Function1Void<T> f) { f.apply(head()); // #11
-		 * tail().foreach(f); }
-		 */
 		@Override
 		public boolean equals(Object other) {
 			if (other == null || getClass() != other.getClass())
@@ -88,6 +78,14 @@ public class ListModule {
 		@Override
 		public String toString() {
 			return "(" + head() + ", " + tail() + ")";
+		}
+
+		public <U> U foldLeft(final U seed, final BiFunction<T, U, U> f) {
+			return tail().foldLeft(f.apply(head(), seed), f); // #8
+		}
+		
+		public <U> U foldRight(U seed, BiFunction<T, U, U> f) {
+			return f.apply(head(), tail().foldRight(seed, f)); // #10
 		}
 	}
 
@@ -115,13 +113,6 @@ public class ListModule {
 			return true;
 		}
 
-		/*
-		 * public <T2> T2 foldLeft (T2 seed, Function2<T2,Object,T2> f) { return
-		 * seed; } public <T2> T2 foldRight (T2 seed, Function2<Object,T2,T2> f)
-		 * { return seed; }
-		 * 
-		 * public void foreach (Function1Void<Object> f) {}
-		 */
 		@Override
 		public String toString() {
 			return "()";
@@ -137,6 +128,14 @@ public class ListModule {
 
 		public <R, U> List<R> map(BiFunction<Object, U, R> f, final U u) {
 			return emptyList();
+		}
+
+		public <U> U foldLeft(final U seed, final BiFunction<Object, U, U> f) {
+			return seed;
+		}
+
+		public <U> U foldRight(final U seed, final BiFunction<Object, U, U> f) {
+			return seed;
 		}
 	};
 
